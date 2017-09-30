@@ -98,10 +98,6 @@ The str function is very useful
     ## Classes 'summaryDefault', 'table'  Named num [1:6] 1 1.5 3 5.71 4 ...
     ##   ..- attr(*, "names")= chr [1:6] "Min." "1st Qu." "Median" "Mean" ...
 
-![](figures/Chart_01.jpeg)
-![](figures/Chart_01.jpeg)
-![](figures/Chart_01.jpeg)
-
 Let's start
 
     ## # A tibble: 6 × 6
@@ -114,16 +110,6 @@ Let's start
     ## 5 Afghanistan      Asia  1972  36.088 13079460  739.9811
     ## 6 Afghanistan      Asia  1977  38.438 14880372  786.1134
 
-![](viznotes_files/figure-markdown_strict/unnamed-chunk-12-1.png)
-
-![](figures/Chart_01.jpeg)
-![](figures/Chart_01.jpeg)
-![](figures/Chart_01.jpeg)
-![](figures/Chart_01.jpeg)
-
-
-![](figures\Chart_01.jpeg) 
-
 
 \#\# Let's look at the data
 
@@ -131,13 +117,12 @@ We know the data but not the mapping
 
 The geometry is missing and we add it like that
 
-![](viznotes_files/figure-markdown_strict/unnamed-chunk-15-1.png)
-![Figure 2](figures\Chart_02.jpeg) We can add a trend line like that :
+We can add a trend line like that :
 
     ## `geom_smooth()` using method = 'gam'
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-16-1.png)
-![Figure 3](figures\Chart_03.jpeg)
+![](figures/Chart_01.jpeg)
 
 Only the line is showed. If I want to show the points and the line, I
 have to put both in my chart like this:
@@ -145,26 +130,32 @@ have to put both in my chart like this:
     ## `geom_smooth()` using method = 'gam'
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-17-1.png)
-![Figure 4](figures\Chart_04.jpeg)
+![](figures/Chart_02.jpeg)
 
 The function of the trend has been automatically chose by R. If I want
 to specify the function as a line I can do the following:
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-18-1.png)
-![Figure 5](figures\Chart_05.jpeg) 
+![](figures/Chart_03.jpeg)
 
 If I want to change the scale and
 instead of plot x and y I want to plot them on a Log10 scale I can do
 the following (first version is the explicit declaration then a function
 is used)
 
-![](viznotes_files/figure-markdown_strict/unnamed-chunk-19-1.png) In the
+![](viznotes_files/figure-markdown_strict/unnamed-chunk-19-1.png) 
+![](figures/Chart_04.jpeg)
+
+In the
 case above the GAM function is used in the smooth. This is used to fit a
 Generalized Additive Model.
 
 That should be equivalent to this:
 
-![](viznotes_files/figure-markdown_strict/unnamed-chunk-20-1.png) The
+![](viznotes_files/figure-markdown_strict/unnamed-chunk-20-1.png) 
+![](figures/Chart_05.jpeg)
+
+The
 only difference is in the scale. Above I had the value of the Log. In
 the second case instead I have the value de-logged.
 
@@ -175,31 +166,40 @@ scale\_x\_sqrt() scale\_x\_reverse()
 Let's try them both:
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-21-1.png)
+![](figures/Chart_06.jpeg)
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-22-1.png)
+![](figures/Chart_07.jpeg)
 
 If we haven't loaded a library and we want to use a component of that
 library we use the following syntax thelibrary::thefunction as in the
 below:
 
-![](viznotes_files/figure-markdown_strict/unnamed-chunk-23-1.png) A part
-from scales::dollar we have other function that we can use such as
+![](viznotes_files/figure-markdown_strict/unnamed-chunk-23-1.png) 
+![](figures/Chart_08.jpeg)
+
+A part from scales::dollar we have other function that we can use such as
 scale::commas that we will try here below:
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-24-1.png)
+![](figures/Chart_09.jpeg)
 
 Now we can add more variables to our plot. Let's see how:
 
     ## `geom_smooth()` using method = 'loess'
 
-![](viznotes_files/figure-markdown_strict/unnamed-chunk-25-1.png) The
-plot is very difficult to read and also there are 5 smoothers, one
+![](viznotes_files/figure-markdown_strict/unnamed-chunk-25-1.png) 
+![](figures/Chart_10.jpeg)
+
+The plot is very difficult to read and also there are 5 smoothers, one
 foreach continent. This was my own plot, the book did not trace it.
 
 Let's go back to what the book trace:
 
-![](viznotes_files/figure-markdown_strict/unnamed-chunk-26-1.png) The
-legend there is because we added the colour in the wrong place. Putting
+![](viznotes_files/figure-markdown_strict/unnamed-chunk-26-1.png) 
+![](figures/Chart_11.jpeg)
+
+The legend there is because we added the colour in the wrong place. Putting
 it into the aes R reclycle the string, makes it a vector on the fly so a
 new dimension is created similar to what happened before with the
 continent.
@@ -208,6 +208,8 @@ Remember that the purple is the colour of the points so let's put it in
 the right place as below:
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-27-1.png)
+![](figures/Chart_12.jpeg)
+
 Attributes that are not typical of the mapping of the plot do not go
 inside the aes function. Here below we set some parameters belonging to
 smooth function. The se function switches of the standard error around
@@ -217,15 +219,19 @@ smooth outside the mapping that is concerned just with what it has to be
 mapped on the chart (the coordinates of the points)
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-28-1.png)
+![](figures/Chart_13.jpeg)
 
 Now we can make a polished plot
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-29-1.png)
+![](figures/Chart_14.jpeg)
 
 We can add in our chart the information about the Continent as well:
 
-![](viznotes_files/figure-markdown_strict/unnamed-chunk-30-1.png) The
-problem with the chart above is that is very confused. We have 5 lines
+![](viznotes_files/figure-markdown_strict/unnamed-chunk-30-1.png) 
+![](figures/Chart_15.jpeg)
+
+The problem with the chart above is that is very confused. We have 5 lines
 that are a little bit too many.
 
 We can avoid it. Maybe just one line would be enough. This happens
@@ -238,6 +244,7 @@ the geom\_ we will say that we want the points colored by continent in
 this way:
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-31-1.png)
+![](figures/Chart_16.jpeg)
 
 It is possible to map continuous variables to colors as well. Note that
 the continent is a discrete or categorical variables (that assumes a
@@ -246,6 +253,7 @@ It is better to cut a continuous variable into bins rather than using a
 colour.
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-32-1.png)
+![](figures/Chart_17.jpeg)
 
 Group, facets and transform
 ===========================
@@ -257,8 +265,10 @@ We want to plot the trajectory of life expectancy over time for each
 contry. We want to see that as years pass life expectancy increases.
 Year will be our X variable and lifeExp Y.
 
-![](viznotes_files/figure-markdown_strict/unnamed-chunk-33-1.png) This
-is not what we expected. Our data are for each contry, so we need to
+![](viznotes_files/figure-markdown_strict/unnamed-chunk-33-1.png) 
+![](figures/Chart_18.jpeg)
+
+This is not what we expected. Our data are for each contry, so we need to
 tell this to ggplot. What ggplot is doing is the following: it finds a
 series of year observations (e.g 1952 Afganistan, 1952 USA, 1952 Italy)
 and put them all together. So it seems that we do not have some numbers
@@ -270,6 +280,7 @@ aesthetics for the geometry being used. Therefore in the geom\_ we need
 to redefine, customize the aesthetics in order for R doing what we want.
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-34-1.png)
+![](figures/Chart_19.jpeg)
 
 The outlier is Kuwait.
 
@@ -280,6 +291,7 @@ aesthetic.
 Similar we can do:
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-35-1.png)
+![](figures/Chart_20.jpeg)
 
 Facet
 -----
@@ -292,11 +304,15 @@ Facets is not a geom\_ but a way to organise geometries. We use
 facet\_wrap. Many arguments can be used but the most important is the
 first one - the R formula which use the tilde char ~
 
-![](viznotes_files/figure-markdown_strict/unnamed-chunk-36-1.png) Let's
-try to put all in one line with the trend line in each plot
+![](viznotes_files/figure-markdown_strict/unnamed-chunk-36-1.png) 
+![](figures/Chart_21.jpeg)
 
-![](viznotes_files/figure-markdown_strict/unnamed-chunk-37-1.png) Facets
-can do more that that. It is possible to cross-classify some data by two
+Let's try to put all in one line with the trend line in each plot
+
+![](viznotes_files/figure-markdown_strict/unnamed-chunk-37-1.png) 
+![](figures/Chart_22.jpeg)
+
+Facets can do more that that. It is possible to cross-classify some data by two
 categorical variables. In this case you use facet\_grid(). The plot will
 be laid in a true two-dimensional arrangement.
 
@@ -304,8 +320,10 @@ We can see this on the diamonds dataset
 
     ## `geom_smooth()` using method = 'gam'
 
-![](viznotes_files/figure-markdown_strict/unnamed-chunk-38-1.png) We
-have 2 variables the cut (fair, good, fairy good, premium, ideal) and
+![](viznotes_files/figure-markdown_strict/unnamed-chunk-38-1.png) 
+![](figures/Chart_23.jpeg)
+
+We have 2 variables the cut (fair, good, fairy good, premium, ideal) and
 the color (D, E, F, G, H, I, J). For each of the 35 combinations
 facet\_grid makes a chart of the carat vs price.
 
@@ -316,6 +334,7 @@ There is a difference if you write the formula like that cut ~ color or
     ## `geom_smooth()` using method = 'gam'
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-39-1.png)
+![](figures/Chart_24.jpeg)
 
 Geom
 ----
@@ -323,6 +342,8 @@ Geom
 Every geom\_ function has an associated stat\_ function that it uses by
 default
 
-![](viznotes_files/figure-markdown_strict/unnamed-chunk-40-1.png) The
-chart above represent the count by continent of the points. This is
+![](viznotes_files/figure-markdown_strict/unnamed-chunk-40-1.png) 
+![](figures/Chart_25.jpeg)
+
+The chart above represent the count by continent of the points. This is
 because the bar has the stat\_count as default.
