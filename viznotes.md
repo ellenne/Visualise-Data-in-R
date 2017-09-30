@@ -98,6 +98,10 @@ The str function is very useful
     ## Classes 'summaryDefault', 'table'  Named num [1:6] 1 1.5 3 5.71 4 ...
     ##   ..- attr(*, "names")= chr [1:6] "Min." "1st Qu." "Median" "Mean" ...
 
+![](figures/Chart_01.jpeg)
+![](figures/Chart_01.jpeg)
+![](figures/Chart_01.jpeg)
+
 Let's start
 
     ## # A tibble: 6 × 6
@@ -111,7 +115,17 @@ Let's start
     ## 6 Afghanistan      Asia  1977  38.438 14880372  786.1134
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-12-1.png)
-![](figures\Chart_01.jpeg) \#\# Let's look at the data
+
+![](figures/Chart_01.jpeg)
+![](figures/Chart_01.jpeg)
+![](figures/Chart_01.jpeg)
+![](figures/Chart_01.jpeg)
+
+
+![](figures\Chart_01.jpeg) 
+
+
+\#\# Let's look at the data
 
 We know the data but not the mapping
 
