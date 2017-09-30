@@ -111,19 +111,19 @@ Let's start
     ## 6 Afghanistan      Asia  1977  38.438 14880372  786.1134
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-12-1.png)
-![](figures\Chart_01.png) \#\# Let's look at the data
+![](figures\Chart_01.jpeg) \#\# Let's look at the data
 
 We know the data but not the mapping
 
 The geometry is missing and we add it like that
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-15-1.png)
-![Figure 2](figures\Chart_02.png) We can add a trend line like that :
+![Figure 2](figures\Chart_02.jpeg) We can add a trend line like that :
 
     ## `geom_smooth()` using method = 'gam'
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-16-1.png)
-![Figure 3](figures\Chart_03.png)
+![Figure 3](figures\Chart_03.jpeg)
 
 Only the line is showed. If I want to show the points and the line, I
 have to put both in my chart like this:
@@ -131,13 +131,15 @@ have to put both in my chart like this:
     ## `geom_smooth()` using method = 'gam'
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-17-1.png)
-![Figure 4](figures\Chart_04.png)
+![Figure 4](figures\Chart_04.jpeg)
 
 The function of the trend has been automatically chose by R. If I want
 to specify the function as a line I can do the following:
 
 ![](viznotes_files/figure-markdown_strict/unnamed-chunk-18-1.png)
-![Figure 5](figures\Chart_05.png) If I want to change the scale and
+![Figure 5](figures\Chart_05.jpeg) 
+
+If I want to change the scale and
 instead of plot x and y I want to plot them on a Log10 scale I can do
 the following (first version is the explicit declaration then a function
 is used)
