@@ -1,0 +1,431 @@
+---
+title: "MyNotes"
+author: "Luigi Neri"
+date: "16 September 2017"
+output: html_document
+---
+
+# Instalation of the packages needed for the work
+
+```{r setupFirst}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(socviz)
+library(gapminder)
+```
+
+```{r setup, eval=FALSE}
+my_packages <- c("tidyverse", "broom", "coefplot","cowplot",
+                 "gapminder", "GGally", "ggrepel", 
+                 "ggridges", "gridExtra", "interplot",
+                 "margins", "maps", "mapproj", "mapdata",
+                 "MASS", "quantreg", "scales", "survey",
+                 "srvyr", "viridis", "viridisLite",
+                 "devtools")
+
+install.packages(my_packages,
+                 repos = "http://cran.rstudio.com")
+```
+
+## one other special package is required
+
+
+```{r eval=FALSE}
+devtools::install_github("kjhealy/socviz")
+library(tidyverse)
+library(socviz)
+```
+
+# Basics of the R language
+
+```{r}
+c(1, 2, 3, 1, 3, 5, 25)
+```
+
+```{r}
+my_numbers <- c(1, 2, 3, 1, 3, 5, 25)
+your_numbers <- c(5, 31, 71, 1, 3, 21, 6)
+
+```
+
+## There is a shortcut for the assignment operator that is ## ALT + -
+
+## Functions
+```{r}
+mean(x = my_numbers)
+mean(x = your_numbers)
+my_summary <- summary(my_numbers)
+table(my_numbers)
+sd(my_numbers)
+my_numbers * 2 
+my_numbers + 1
+my_numbers + my_numbers
+```
+
+## You can always ask the class
+
+```{r}
+class(my_numbers)
+class(my_summary)
+class(summary)
+```
+
+
+The class of the R objects can change as per below:
+
+```{r}
+my_new_vector <- c(my_numbers, "Apple")
+my_new_vector
+class(my_new_vector)
+```
+
+Note that in my_new_vector the numbers became characters therefore they cannot be used as they are to make calculations. They need to be converted back into numbers.
+
+# Data Frame
+
+```{r}
+titanic
+```
+```{r}
+class(titanic)
+```
+
+
+In order to access to the data frame variables we use the dollar operator ($)
+
+```{r}
+titanic$percent
+```
+
+# To see inside an object
+ 
+The str function is very useful
+
+```{r}
+str(my_numbers)
+str(my_summary)
+```
+
+Let's start
+
+```{r}
+library(gapminder)
+head(gapminder)
+```
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap, y = lifeExp))
+p + geom_point()
+```
+
+## Let's look at the data
+
+```{r}
+data(anscombe)
+library(gapminder)
+p <- ggplot(data = gapminder)
+```
+
+We know the data but not the mapping 
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap,
+                          y = lifeExp))
+```
+
+The geometry is missing and we add it like that 
+
+```{r}
+p + geom_point()
+```
+
+We can add a trend line like that :
+
+```{r}
+p + geom_smooth()
+```
+
+Only the line is showed. If I want to show the points and the line, I have to put both in my chart like this:
+
+```{r}
+p + geom_point() + geom_smooth()
+```
+
+The function of the trend has been automatically chose by R. If I want to specify the function as a line I can do the following:
+
+```{r}
+p + geom_point() + geom_smooth(method = "lm")
+```
+
+If I want to change the scale and instead of plot x and y I want to plot them on a Log10 scale I can do the following (first version is the explicit declaration then a function is used)
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = log10(gdpPercap),
+                          y = lifeExp)
+            )
+p + geom_point() +
+  geom_smooth(method = "gam")
+```
+In the case above the GAM function is used in the smooth. This is used to fit a Generalized Additive Model.
+
+That should be equivalent to this:
+
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap,
+                          y = lifeExp)
+            )
+p + geom_point() +
+  geom_smooth(method = "gam") +
+  scale_x_log10()
+```
+The only difference is in the scale. Above I had the value of the Log. In the second case instead I have the value de-logged.
+
+Other useful transformation can be the following:
+
+scale_x_sqrt()
+scale_x_reverse()
+
+Let's try them both:
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap,
+                          y = lifeExp)
+            )
+p + geom_point() +
+  geom_smooth(method = "gam") +
+  scale_x_sqrt()
+```
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap,
+                          y = lifeExp)
+            )
+p + geom_point() +
+  geom_smooth(method = "gam") +
+  scale_x_reverse()
+```
+
+If we haven't loaded a library and we want to use a component of that library we use the following syntax thelibrary::thefunction as in the below:
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap, y = lifeExp))
+p + geom_point() +
+    geom_smooth(method = "gam") +
+    scale_x_log10(labels = scales::dollar)
+```
+A part from scales::dollar we have other function that we can use such as scale::commas that we will try here below:
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap, y = lifeExp))
+p + geom_point() +
+    geom_smooth(method = "gam") +
+    scale_x_log10(labels = scales::comma)
+```
+
+Now we can add more variables to our plot. Let's see how:
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap,
+                          y = lifeExp,
+                          color = continent))
+
+p + geom_point() + geom_smooth() + 
+    scale_x_log10(labels = scales::dollar)
+
+```
+The plot is very difficult to read and also there are 5 smoothers, one foreach continent. 
+This was my own plot, the book did not trace it.
+
+Let's go back to what the book trace:
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap,
+                          y = lifeExp,
+                          color = "purple"))
+p + geom_point() +
+    geom_smooth(method = 'loess') +
+    scale_x_log10()
+```
+The legend there is because we added the colour in the wrong place. Putting it into the aes R reclycle the string, makes it a vector on the fly so a new dimension is created similar to what happened before with the continent. 
+
+Remember that the purple is the colour of the points so let's put it in the right place as below:
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap,
+                          y = lifeExp))
+p + geom_point(color = "purple") +
+    geom_smooth(method = 'loess') +
+    scale_x_log10()
+```
+Attributes that are not typical of the mapping of the plot do not go inside the aes function. Here below we set some parameters belonging to smooth function. The se function switches of the standard error around the trend line. The size is very high (to have a very thick line) and the method is lm.
+Note that all these have been specified within the smooth outside the mapping that is concerned just with what it has to be mapped on the chart (the coordinates of the points)
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap, y = lifeExp))
+p + geom_point(alpha = 0.3) +
+    geom_smooth(color = "orange", se = FALSE, size = 8,
+                method = "lm")+
+    scale_x_log10()
+```
+
+Now we can make a polished plot
+
+```{r}
+p <- ggplot(data = gapminder, 
+            mapping = aes(x = gdpPercap, y = lifeExp))
+p + geom_point(alpha = 0.3) +
+    geom_smooth(method = "gam") + 
+    scale_x_log10(labels = scales::dollar) +
+    labs(x = "GDP Per Capita",
+         y = "Life Expectancy in Years",
+         title = "Economic Growth and Life Expectancy",
+         subtitle = "Data points are country-years",
+         caption = "Source: Gapminder.")
+```
+
+We can add in our chart the information about the Continent as well:
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap,
+                          y = lifeExp,
+                          color = continent,
+                          fill = continent))
+p + geom_point() +
+    geom_smooth(method = 'loess') +
+    scale_x_log10()
+```
+The problem with the chart above is that is very confused. We have 5 lines that are a little bit too many. 
+
+We can avoid it. Maybe just one line would be enough.
+This happens because the geom_ functions inherit the mapping from the ggplot function that is in the layer above. But we can modify this redefying the mapping in the geom_ as well.
+
+So we will not specify the color and fill in the ggplot function but in the geom_ we will say that we want the points colored by continent in this way:
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap,
+                          y = lifeExp))
+p + geom_point(mapping = aes(color = continent)) +
+    geom_smooth(method = 'loess') +
+    scale_x_log10(labels = scales::dollar)
+```
+
+It is possible to map continuous variables to colors as well. Note that the continent is a discrete or categorical variables (that assumes a small number of values). 
+We are going to see it with Population (pop). It is better to cut a continuous variable into bins rather than using a colour.
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = gdpPercap,
+                          y = lifeExp))
+p + geom_point(mapping = aes(color = pop)) +
+    scale_x_log10()
+```
+
+# Group, facets and transform
+
+## Group
+
+We want to plot the trajectory of life expectancy over time for each contry. We want to see that as years pass life expectancy increases. Year will be our X variable and lifeExp Y. 
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = year,
+                          y = gdpPercap))
+p + geom_line()
+```
+This is not what we expected. Our data are for each contry, so we need to tell this to ggplot.
+What ggplot is doing is the following: it finds a series of year observations (e.g 1952 Afganistan, 1952 USA, 1952 Italy) and put them all together. So it seems that we do not have some numbers of observations by each year.
+
+When ggplot gives a chart that is wrong but without an error being produced it means that there is a mismatch between the data and the aesthetics for the geometry being used. Therefore in the geom_ we need to redefine, customize the aesthetics in order for R doing what we want.
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = year,
+                          y = gdpPercap))
+p + geom_line(aes(group = country))
+```
+
+The outlier is Kuwait.
+
+The previous with the previous plot was that ggplot could not know that the year was grouped by country and this is what we tell in the geom_ aesthetic.
+
+Similar we can do:
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = year, y = lifeExp))
+p + geom_line(aes(group = country))
+```
+
+## Facet
+
+The charts above are powerful but they are pretty unreadable. So we can use facets, produce many little charts that we put back to back or organise in a matrix to highlight differences.
+
+Facets is not a geom_ but a way to organise geometries. We use facet_wrap. Many arguments can be used but the most important is the first one - the R formula which use the tilde char ~
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = year,
+                          y = gdpPercap))
+p + geom_line(aes(group = country)) +
+    facet_wrap(~ continent)
+```
+Let's try to put all in one line with the trend line in each plot
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = year, y = gdpPercap))
+p + geom_line(color = "gray70", aes(group = country)) +
+    geom_smooth(size = 1.1, method = "loess", se = FALSE) +   scale_y_log10(labels = scales::dollar) +
+    facet_wrap(~ continent, ncol = 5) +
+    labs(x = "Year",
+         y = "GDP per capita",
+         title = "GDP per capita on Five Continents")
+  
+```
+Facets can do more that that. It is possible to cross-classify some data by two categorical variables. In this case you use facet_grid(). The plot will be laid in a true two-dimensional arrangement.
+
+We can see this on the diamonds dataset
+
+```{r}
+p <- ggplot(data = diamonds, 
+            mapping = aes(x = carat, y = price))
+p + geom_smooth(alpha = 0.3) +
+    facet_grid(cut ~ color)
+```
+We have 2 variables the cut (fair, good, fairy good, premium, ideal) and the color (D, E, F, G, H, I, J). For each of the 35 combinations facet_grid makes a chart of the carat vs price.
+
+Further CATEGORICAL variables can be added (e.g cut ~ color + clarity)
+There is a difference if you write the formula like that cut ~ color or ~ cut + color
+
+```{r}
+p <- ggplot(data = diamonds, 
+            mapping = aes(x = carat, y = price))
+p + geom_smooth(alpha = 0.3) +
+    facet_grid(~ cut + color)
+```
+
+## Geom
+
+Every geom_ function has an associated stat_ function that it uses by default
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = continent))
+p + geom_bar()
+```
+The chart above represent the count by continent of the points. This is because the bar has the stat_count as default.

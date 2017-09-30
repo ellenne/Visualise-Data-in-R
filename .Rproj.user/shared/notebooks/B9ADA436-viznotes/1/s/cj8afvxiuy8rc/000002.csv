@@ -1,0 +1,3 @@
+"0","data(anscombe)"
+"0","library(gapminder)"
+"0","p <- ggplot(data = gapminder)"
