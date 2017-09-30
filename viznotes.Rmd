@@ -2,7 +2,7 @@
 title: "MyNotes"
 author: "Luigi Neri"
 date: "16 September 2017"
-output: html_document
+output: md_document
 ---
 
 # Instalation of the packages needed for the work

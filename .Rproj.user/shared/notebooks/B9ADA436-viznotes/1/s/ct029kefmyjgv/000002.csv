@@ -1,3 +1,0 @@
-"0","p <- ggplot(data = gapminder,"
-"0","            mapping = aes(x = gdpPercap, y = lifeExp))"
-"0","p + geom_point()"
