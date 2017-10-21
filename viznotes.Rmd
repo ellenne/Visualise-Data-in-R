@@ -431,3 +431,205 @@ p <- ggplot(data = gapminder,
 p + geom_bar()
 ```
 The chart above represent the count by continent of the points. This is because the bar has the stat_count as default.
+
+We need to notice that the y-axis contains the variable 'count' that is not in the data. Ggplot is counting the couple year-country for us automatically. This is done using the stat_ function associated with it in this case stat_count(). This function has computed 2 new vars count and prop (proportion).
+stat_count is used by default by geom_bar()
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = continent))
+p + geom_bar(mapping = aes(y = ..prop..))
+```
+
+The .. before and after the variable names is to make sure these variables are not confused with others that can possibly exist.
+
+We are trying to make a chart with the proportion of observations per country. What is happening with the chart above is that the denominator is the number of observation by contient, that's why it is always giving us 100%. It is the opposite problem of the grouping because we need to tell R to consider as denominator the total number of observations. So we need to tell ggplot to ignore the x category when calculating the denominator of the proportion and use the total. 
+We do that using group = 1 inside the aes call. 1 is a dummy value to say to use the whole dataset when establishing the denominator for the proportion
+
+```{r}
+p <- ggplot(data = gapminder,
+            mapping = aes(x = continent))
+p + geom_bar(mapping = aes(y = ..prop.., group = 1))
+```
+
+In order to show other function of geom_bar we will use another dataset containing more categorical variables.
+This is the General Social Survey (GSS). It is in the socviz package. We see the results of the question what is your religion:
+
+```{r}
+table(gss_sm$religion)
+```
+
+We want a bar chart coloured by religion. So religion should be in the fill. 
+
+```{r}
+p <- ggplot(data = gss_sm,
+            mapping = aes(x = religion, color = religion))
+p + geom_bar()
+```
+
+We need to remember that mapping religion to color will just give the color to the external shape but the inside will stay gray. If we want to fill we need to use fill 
+
+```{r}
+p <- ggplot(data = gss_sm,
+            mapping = aes(x= religion, fill = religion))
+p + geom_bar() + guides(fill = FALSE)
+```
+guides(fill = FALSE) helps the name not to go one over the other. Also the legend is removed. The legend is there because we mapped the same variable (religion) on 2 aesthetics (x and color/fill).
+
+The fill aesthetics can be used to show 2 variables at once.
+The dataset has another variable called big region that can be broken down by religion in this way:
+
+```{r}
+p <- ggplot(data = gss_sm,
+            mapping = aes(x = bigregion, fill = religion))
+p + geom_bar()
+```
+
+It is difficult to see the position of the Catholics in the different regions therefore we can do as follow:
+
+```{r}
+p <- ggplot(data = gss_sm,
+            mapping = aes(x = bigregion, fill = religion))
+p + geom_bar(position = "fill")
+```
+
+If we want stacked bars we use dodge:
+
+```{r}
+p <- ggplot(data = gss_sm,
+            mapping = aes(x = bigregion, fill = religion))
+p + geom_bar(position = "dodge")
+```
+
+We loose the proportion because the count takes over so we can use the very same trick we used above:
+
+```{r}
+p <- ggplot(data = gss_sm,
+            mapping = aes(x = bigregion, fill = religion))
+p + geom_bar(mapping = aes(y = ..prop..),
+             position = "dodge")
+```
+
+We need to say that the denominator of the proportion should be the total and not what there is in the bigregion. We do that using group. We want that the sum of the percentages in each bigregion is 100% so religion should be the variable we group by in order to calculate the proportions.
+
+```{r}
+p <- ggplot(data = gss_sm,
+            mapping = aes(x = bigregion, fill = religion))
+p + geom_bar(mapping = aes(y = ..prop.., group = religion),
+             position = "dodge")
+```
+
+The above is not quite right because the objective was not achieved. In fact if you sum the percentages within big region you do not get to 100% but you get to 100% if you sum the same religion across the big regions. This is what we said when we said group = religion (if catholics are 100 across the 4 regions give me the percentage). We should group by 2 things, the religion and the big region. So if I have 100 in the Northeast and 50 are catholic is do 50/100. 
+```{r}
+table(gss_sm$bigregion, gss_sm$religion)
+```
+
+If we want to calculate the percentages, there is some work to do but eventually we arrive there:
+```{r}
+t1 <- table(gss_sm$bigregion, gss_sm$religion)
+t2 <- as.matrix(prop.table(t1, 2))
+
+
+t3 <- matrix(data = sprintf("%.1f %%", 100*t2), ncol = 5, nrow = 4)
+row.names(t3) <- rownames(t2)
+colnames(t3) <- colnames(t2)
+t3
+```
+
+Let's work with our data to have the right numbers to plot:
+```{r}
+rel_by_region <- gss_sm %>% 
+  group_by(bigregion, religion) %>% 
+  summarise(N = n()) %>% 
+  mutate(freq = N / sum(N),
+         pct = round((freq*100),1))
+rel_by_region
+```
+
+In order to check if we got the calculation right, the percentage in each region should amount to 100%. We can check if this is the case with the following code:
+
+```{r}
+rel_by_region %>% 
+  group_by(bigregion) %>% 
+  summarise(total = sum(pct))
+```
+Now we can do our plot:
+
+```{r}
+p <- ggplot(rel_by_region, aes(x = bigregion, y = pct, fill = religion))
+p + geom_bar(position = "dodge", stat = "identity") +
+    labs(x = "Region", y = "Percent", fill = "Religion") +
+    theme(legend.position = "top")
+```
+Not all times we need to transform data. When we do not have we can plot them directly like the example below that uses the aggregated data from the Titanic. We could use geom_bar(stat = "identity") but a shorter alternative is geom_col let's see:
+
+```{r}
+p <- ggplot(data = titanic,
+            mapping = aes(x = fate, y = percent, fill = sex))
+p + geom_col(position = "dodge") +
+    theme(legend.position = "top")
+```
+
+The position argument can be used in both geom_bar() and geom_col(). It can also take the value of "identity". stat="identity" means don't do any summary calculations
+position = "identity" means just plot the values as given.
+This allows us to plot a flow of positive and negative values in a bar charts. We see that with some CO2 concentration data.
+
+```{r}
+head(maunaloa)
+p <- ggplot(data = maunaloa,
+            mapping = aes(x = date, y = diff, fill = pos))
+p + geom_col() + guides(fill = FALSE)
+```
+
+We used geom_col() that is very good and short. If we used geom_bar we should have specified the argument position in the following way geom_bar(position = "identity"). The guides function with fill = FALSE drops the legend.
+
+## Transform Histograms and Density Plots
+
+When we have a continuous variable plotting in a histogram is not the smartest thing to do. We can transform the variable making the chart more meaningful. We will work with the dataset midwest coming with ggplot that contains country data for the midwest region of the US. 
+
+```{r}
+p <- ggplot(data = midwest,
+            mapping = aes(x = area))
+p + geom_histogram()
+```
+
+```{r}
+p <-  ggplot(data = midwest,
+             mapping = aes(x = area))
+p + geom_histogram(bins = 10)
+```
+
+```{r}
+OH.WI <- c("OH", "WI")
+
+p <- ggplot(data = subset(midwest, subset = state %in% OH.WI),
+            mapping = aes(x = percollege, fill = state))
+p + geom_histogram(alpha = 0.4, bins = 20)
+```
+
+Above we are comparing the distribution of two of the states that we chose. 
+
+When we work with continuous variable an alternative to bins is a kernel density estimate of the underlying distribution. The function geom_density() does that for us:
+
+```{r}
+p <- ggplot(data = midwest,
+            mapping = aes(x = area))
+p + geom_density()
+```
+
+```{r}
+p <- ggplot(data = midwest,
+            mapping = aes(x = area, fill = state, color = state))
+p + geom_density(alpha = 0.3)
+```
+We can ask geom_density to return some statistics such as:
+- ..density.. 
+- ..scaled.. (proportional density scaled to a max of 1)
+- ..count.. (density times the number of points)
+
+```{r}
+p <- ggplot(data = subset(midwest, subset = state %in% OH.WI),
+            mapping = aes(x = area, fill = state, color = state))
+p + geom_density(alpha = 0.3, mapping = (aes(y = ..scaled..)))
+```
+
