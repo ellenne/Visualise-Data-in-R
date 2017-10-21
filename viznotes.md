@@ -513,9 +513,12 @@ geom\_density() does that for us:
 
 ![Figure 42](figures/Chart_42.jpeg)
 
-![Figure 43](figures/Chart_43.jpeg) We can
-ask geom\_density to return some statistics such as: - ..density.. -
-..scaled.. (proportional density scaled to a max of 1) - ..count..
-(density times the number of points)
+![Figure 43](figures/Chart_43.jpeg) 
 
-![Figure 44](figures/Chart_44.jpeg)
+We can ask geom\_density to return some statistics such as: 
+
+- ..density.. 
+- ..scaled.. (proportional density scaled to a max of 1) 
+- ..count..  (density times the number of points)
+
+!Figure 44[Figure 44](figures/Chart_44.jpeg)
