@@ -633,3 +633,107 @@ p <- ggplot(data = subset(midwest, subset = state %in% OH.WI),
 p + geom_density(alpha = 0.3, mapping = (aes(y = ..scaled..)))
 ```
 
+# Work with Geom
+
+We will do 3 things now:
+
+1) Learn more geoms
+2) Explore more ggplot arguments departing from defaults
+3) Layering geometries
+
+We will use a new dataset that we will explore. Instead of using head we will use another command that gives us a random sample of the data:
+
+```{r}
+organdata %>% select(1:6) %>% sample_n(size = 10)
+```
+
+We decided to explore just 6 columns of this dataset.
+Let's do some basic chart to know our data:
+
+```{r}
+p <- ggplot(data = organdata,
+            mapping = aes(x = year, y = donors))
+p + geom_point()
+```
+
+If we want to make exploration by county:
+
+```{r}
+p <- ggplot(data = organdata,
+            mapping = aes(x = year, y = donors))
+p + geom_line(aes(group = country)) + facet_wrap(~ country)
+```
+
+## Boxplot
+
+```{r}
+p <- ggplot(data = organdata,
+            mapping = aes(x = country, y = donors))
+p + geom_boxplot()
+```
+
+We are analysing the numbers of donors, regardeless of the year, by country. Clearly there are some countries that have more and others that have less. Note that neither year nor the population or density is considered at this stage.
+
+The chart is not readable, swapping the x axis with the y axis will solve the problem :
+
+```{r}
+p <- ggplot(data = organdata,
+            mapping = aes(x= country, y = donors))
+p + geom_boxplot() + coord_flip()
+```
+
+Note that swapping x with y in the first chart does not work. It does not give the whisker, just a line that is meaningless. 
+
+Now we would like to sort the data from the highest to the lowest. In order to accomplish this we use reorder. We need to keep in mind that because of the NA we need to use the function to exclude them.
+
+```{r}
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors, na.rm = TRUE),
+                          y = donors))
+p + geom_boxplot() +
+    labs(x = NULL) +
+    coord_flip()
+```
+
+The violin plot can be an alternative but not in this case because there are too many rows.
+
+```{r}
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors, na.rm = TRUE),
+                          y = donors))
+p + geom_violin() +
+    labs(x = NULL) +
+    coord_flip()
+```
+
+We can colour our original plot in the following way:
+
+```{r}
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors, na.rm=TRUE),
+                          y = donors, fill = world))
+p + geom_boxplot() + labs(x = NULL) +
+    coord_flip() + theme(legend.position = "top")
+```
+
+Since in our case we have not a lot of points we can have a look at the individual points in this way:
+
+```{r}
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors, na.rm = TRUE),
+                          y = donors, color = world))
+p + geom_point() + labs(x=NULL) +
+    coord_flip() + theme(legend.position = "top")
+```
+
+Compared to before we do not use fill but we use color because the points do not have a fill unlike the box plot.
+
+```{r}
+p <- ggplot(data = organdata,
+            mapping = aes(x = reorder(country, donors, na.rm = TRUE),
+                          y = donors, color = world))
+p + geom_jitter(position = position_jitter(width=0.015)) + labs(x=NULL) +
+    coord_flip() + theme(legend.position = "top")
+                          
+```
+
