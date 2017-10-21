@@ -110,7 +110,7 @@ Let's start
     ## 5 Afghanistan      Asia  1972  36.088 13079460  739.9811
     ## 6 Afghanistan      Asia  1977  38.438 14880372  786.1134
 
-![](viznotes_files/figure-markdown_strict/chart_01.jpeg-1.png)
+![](figures/chart_01.jpeg)
 
 Let's look at the data
 ----------------------
@@ -119,13 +119,13 @@ We know the data but not the mapping
 
 The geometry is missing and we add it like that
 
-![](viznotes_files/figure-markdown_strict/chart_02.jpeg-1.png)
+![](figures/chart_02.jpeg)
 
 We can add a trend line like that :
 
     ## `geom_smooth()` using method = 'gam'
 
-![](viznotes_files/figure-markdown_strict/chart_03.jpeg-1.png) ![Figure
+![](figures/chart_03.jpeg) ![Figure
 3](figures\Chart_03.png)
 
 Only the line is showed. If I want to show the points and the line, I
@@ -133,24 +133,24 @@ have to put both in my chart like this:
 
     ## `geom_smooth()` using method = 'gam'
 
-![](viznotes_files/figure-markdown_strict/chart_04.jpeg-1.png) ![Figure
+![](figures/chart_04.jpeg) ![Figure
 4](figures\Chart_04.png)
 
 The function of the trend has been automatically chose by R. If I want
 to specify the function as a line I can do the following:
 
-![](viznotes_files/figure-markdown_strict/chart_05.jpeg-1.png) ![Figure
+![](figures/chart_05.jpeg) ![Figure
 5](figures\Chart_05.png) If I want to change the scale and instead of
 plot x and y I want to plot them on a Log10 scale I can do the following
 (first version is the explicit declaration then a function is used)
 
-![](viznotes_files/figure-markdown_strict/chart_06.jpeg-1.png) In the
+![](figures/chart_06.jpeg) In the
 case above the GAM function is used in the smooth. This is used to fit a
 Generalized Additive Model.
 
 That should be equivalent to this:
 
-![](viznotes_files/figure-markdown_strict/chart_07.jpeg-1.png) The only
+![](figures/chart_07.jpeg) The only
 difference is in the scale. Above I had the value of the Log. In the
 second case instead I have the value de-logged.
 
@@ -160,31 +160,31 @@ scale\_x\_sqrt() scale\_x\_reverse()
 
 Let's try them both:
 
-![](viznotes_files/figure-markdown_strict/chart_08.jpeg-1.png)
+![](figures/chart_08.jpeg)
 
-![](viznotes_files/figure-markdown_strict/chart_09.jpeg-1.png)
+![](figures/chart_09.jpeg)
 
 If we haven't loaded a library and we want to use a component of that
 library we use the following syntax thelibrary::thefunction as in the
 below:
 
-![](viznotes_files/figure-markdown_strict/chart_10.jpeg-1.png) A part
+![](figures/chart_10.jpeg) A part
 from scales::dollar we have other function that we can use such as
 scale::commas that we will try here below:
 
-![](viznotes_files/figure-markdown_strict/chart_11.jpeg-1.png)
+![](figures/chart_11.jpeg)
 
 Now we can add more variables to our plot. Let's see how:
 
     ## `geom_smooth()` using method = 'loess'
 
-![](viznotes_files/figure-markdown_strict/chart_12.jpeg-1.png) The plot
+![](figures/chart_12.jpeg) The plot
 is very difficult to read and also there are 5 smoothers, one foreach
 continent. This was my own plot, the book did not trace it.
 
 Let's go back to what the book trace:
 
-![](viznotes_files/figure-markdown_strict/chart_13.jpeg-1.png) The
+![](figures/chart_13.jpeg) The
 legend there is because we added the colour in the wrong place. Putting
 it into the aes R reclycle the string, makes it a vector on the fly so a
 new dimension is created similar to what happened before with the
@@ -193,7 +193,7 @@ continent.
 Remember that the purple is the colour of the points so let's put it in
 the right place as below:
 
-![](viznotes_files/figure-markdown_strict/chart_14.jpeg-1.png)
+![](figures/chart_14.jpeg)
 Attributes that are not typical of the mapping of the plot do not go
 inside the aes function. Here below we set some parameters belonging to
 smooth function. The se function switches of the standard error around
@@ -202,15 +202,15 @@ the method is lm. Note that all these have been specified within the
 smooth outside the mapping that is concerned just with what it has to be
 mapped on the chart (the coordinates of the points)
 
-![](viznotes_files/figure-markdown_strict/chart_15.jpeg-1.png)
+![](figures/chart_15.jpeg)
 
 Now we can make a polished plot
 
-![](viznotes_files/figure-markdown_strict/chart_16.jpeg-1.png)
+![](figures/chart_16.jpeg)
 
 We can add in our chart the information about the Continent as well:
 
-![](viznotes_files/figure-markdown_strict/chart_17.jpeg-1.png) The
+![](figures/chart_17.jpeg) The
 problem with the chart above is that is very confused. We have 5 lines
 that are a little bit too many.
 
@@ -223,7 +223,7 @@ So we will not specify the color and fill in the ggplot function but in
 the geom\_ we will say that we want the points colored by continent in
 this way:
 
-![](viznotes_files/figure-markdown_strict/Chart_18.jpeg-1.png)
+![](figures/Chart_18.jpeg)
 
 It is possible to map continuous variables to colors as well. Note that
 the continent is a discrete or categorical variables (that assumes a
@@ -231,7 +231,7 @@ small number of values). We are going to see it with Population (pop).
 It is better to cut a continuous variable into bins rather than using a
 colour.
 
-![](viznotes_files/figure-markdown_strict/Chart_19.jpeg-1.png)
+![](figures/Chart_19.jpeg)
 
 Group, facets and transform
 ===========================
@@ -243,7 +243,7 @@ We want to plot the trajectory of life expectancy over time for each
 contry. We want to see that as years pass life expectancy increases.
 Year will be our X variable and lifeExp Y.
 
-![](viznotes_files/figure-markdown_strict/Chart_20.jpeg-1.png) This is
+![](figures/Chart_20.jpeg) This is
 not what we expected. Our data are for each contry, so we need to tell
 this to ggplot. What ggplot is doing is the following: it finds a series
 of year observations (e.g 1952 Afganistan, 1952 USA, 1952 Italy) and put
@@ -255,7 +255,7 @@ produced it means that there is a mismatch between the data and the
 aesthetics for the geometry being used. Therefore in the geom\_ we need
 to redefine, customize the aesthetics in order for R doing what we want.
 
-![](viznotes_files/figure-markdown_strict/Chart_21.jpeg-1.png)
+![](figures/Chart_21.jpeg)
 
 The outlier is Kuwait.
 
@@ -265,7 +265,7 @@ aesthetic.
 
 Similar we can do:
 
-![](viznotes_files/figure-markdown_strict/Chart_22.jpeg-1.png)
+![](figures/Chart_22.jpeg)
 
 Facet
 -----
@@ -278,10 +278,10 @@ Facets is not a geom\_ but a way to organise geometries. We use
 facet\_wrap. Many arguments can be used but the most important is the
 first one - the R formula which use the tilde char ~
 
-![](viznotes_files/figure-markdown_strict/Chart_23.jpeg-1.png) Let's try
+![](figures/Chart_23.jpeg) Let's try
 to put all in one line with the trend line in each plot
 
-![](viznotes_files/figure-markdown_strict/Chart_24.jpeg-1.png) Facets
+![](figures/Chart_24.jpeg) Facets
 can do more that that. It is possible to cross-classify some data by two
 categorical variables. In this case you use facet\_grid(). The plot will
 be laid in a true two-dimensional arrangement.
@@ -290,7 +290,7 @@ We can see this on the diamonds dataset
 
     ## `geom_smooth()` using method = 'gam'
 
-![](viznotes_files/figure-markdown_strict/Chart_25.jpeg-1.png) We have 2
+![](figures/Chart_25.jpeg) We have 2
 variables the cut (fair, good, fairy good, premium, ideal) and the color
 (D, E, F, G, H, I, J). For each of the 35 combinations facet\_grid makes
 a chart of the carat vs price.
@@ -301,7 +301,7 @@ There is a difference if you write the formula like that cut ~ color or
 
     ## `geom_smooth()` using method = 'gam'
 
-![](viznotes_files/figure-markdown_strict/Chart_26.jpeg-1.png)
+![](figures/Chart_26.jpeg)
 
 Geom
 ----
@@ -309,7 +309,7 @@ Geom
 Every geom\_ function has an associated stat\_ function that it uses by
 default
 
-![](viznotes_files/figure-markdown_strict/Chart_27.jpeg-1.png) The chart
+![](figures/Chart_27.jpeg) The chart
 above represent the count by continent of the points. This is because
 the bar has the stat\_count as default.
 
@@ -319,7 +319,7 @@ automatically. This is done using the stat\_ function associated with it
 in this case stat\_count(). This function has computed 2 new vars count
 and prop (proportion). stat\_count is used by default by geom\_bar()
 
-![](viznotes_files/figure-markdown_strict/Chart_28.jpeg-1.png)
+![](figures/Chart_28a.jpeg)
 
 The .. before and after the variable names is to make sure these
 variables are not confused with others that can possibly exist.
@@ -334,7 +334,7 @@ denominator of the proportion and use the total. We do that using group
 = 1 inside the aes call. 1 is a dummy value to say to use the whole
 dataset when establishing the denominator for the proportion
 
-![](viznotes_files/figure-markdown_strict/Chart_28_jpeg-1.png)
+![](figures/Chart_28.jpeg)
 
 In order to show other function of geom\_bar we will use another dataset
 containing more categorical variables. This is the General Social Survey
@@ -348,13 +348,13 @@ what is your religion:
 We want a bar chart coloured by religion. So religion should be in the
 fill.
 
-![](viznotes_files/figure-markdown_strict/Chart_29.jpeg-1.png)
+![](figures/Chart_29.jpeg)
 
 We need to remember that mapping religion to color will just give the
 color to the external shape but the inside will stay gray. If we want to
 fill we need to use fill
 
-![](viznotes_files/figure-markdown_strict/Chart_30.jpeg-1.png)
+![](figures/Chart_30.jpeg)
 guides(fill = FALSE) helps the name not to go one over the other. Also
 the legend is removed. The legend is there because we mapped the same
 variable (religion) on 2 aesthetics (x and color/fill).
@@ -363,21 +363,21 @@ The fill aesthetics can be used to show 2 variables at once. The dataset
 has another variable called big region that can be broken down by
 religion in this way:
 
-![](viznotes_files/figure-markdown_strict/Chart_31.jpeg-1.png)
+![](figures/Chart_31.jpeg)
 
 It is difficult to see the position of the Catholics in the different
 regions therefore we can do as follow:
 
-![](viznotes_files/figure-markdown_strict/Chart_32.jpeg-1.png)
+![](figures/Chart_32.jpeg)
 
 If we want stacked bars we use dodge:
 
-![](viznotes_files/figure-markdown_strict/Chart_33.jpeg-1.png)
+![](figures/Chart_33.jpeg)
 
 We loose the proportion because the count takes over so we can use the
 very same trick we used above:
 
-![](viznotes_files/figure-markdown_strict/Chart_34.jpeg-1.png)
+![](figures/Chart_34.jpeg)
 
 We need to say that the denominator of the proportion should be the
 total and not what there is in the bigregion. We do that using group. We
@@ -385,7 +385,7 @@ want that the sum of the percentages in each bigregion is 100% so
 religion should be the variable we group by in order to calculate the
 proportions.
 
-![](viznotes_files/figure-markdown_strict/Chart_35.jpeg-1.png)
+![](figures/Chart_35.jpeg)
 
 The above is not quite right because the objective was not achieved. In
 fact if you sum the percentages within big region you do not get to 100%
@@ -444,13 +444,13 @@ the following code:
 
 Now we can do our plot:
 
-![](viznotes_files/figure-markdown_strict/Chart_36.jpeg-1.png) Not all
+![](figures/Chart_36.jpeg) Not all
 times we need to transform data. When we do not have we can plot them
 directly like the example below that uses the aggregated data from the
 Titanic. We could use geom\_bar(stat = "identity") but a shorter
 alternative is geom\_col let's see:
 
-![](viznotes_files/figure-markdown_strict/Chart_37.jpeg-1.png)
+![](figures/Chart_37.jpeg)
 
 The position argument can be used in both geom\_bar() and geom\_col().
 It can also take the value of "identity". stat="identity" means don't do
@@ -466,7 +466,7 @@ values in a bar charts. We see that with some CO2 concentration data.
     ## 305 347.25 1984-05-01  -7.0 FALSE
     ## 306 346.62 1984-06-01  -7.6 FALSE
 
-![](viznotes_files/figure-markdown_strict/Chart_38.jpeg-1.png)
+![](figures/Chart_38.jpeg)
 
 We used geom\_col() that is very good and short. If we used geom\_bar we
 should have specified the argument position in the following way
@@ -483,11 +483,11 @@ ggplot that contains country data for the midwest region of the US.
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](viznotes_files/figure-markdown_strict/Chart_39.jpeg-1.png)
+![](figures/Chart_39.jpeg)
 
-![](viznotes_files/figure-markdown_strict/Chart_40.jpeg-1.png)
+![](figures/Chart_40.jpeg)
 
-![](viznotes_files/figure-markdown_strict/Chart_41.jpeg-1.png)
+![](figures/Chart_41.jpeg)
 
 Above we are comparing the distribution of two of the states that we
 chose.
@@ -496,11 +496,11 @@ When we work with continuous variable an alternative to bins is a kernel
 density estimate of the underlying distribution. The function
 geom\_density() does that for us:
 
-![](viznotes_files/figure-markdown_strict/Chart_42.jpeg-1.png)
+![](figures/Chart_42.jpeg)
 
-![](viznotes_files/figure-markdown_strict/Chart_43.jpeg-1.png) We can
+![](figures/Chart_43.jpeg) We can
 ask geom\_density to return some statistics such as: - ..density.. -
 ..scaled.. (proportional density scaled to a max of 1) - ..count..
 (density times the number of points)
 
-![](viznotes_files/figure-markdown_strict/Chart_44.jpeg-1.png)
+![](figures/Chart_44.jpeg)
