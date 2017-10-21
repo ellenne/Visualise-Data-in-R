@@ -435,7 +435,7 @@ The chart above represent the count by continent of the points. This is because 
 We need to notice that the y-axis contains the variable 'count' that is not in the data. Ggplot is counting the couple year-country for us automatically. This is done using the stat_ function associated with it in this case stat_count(). This function has computed 2 new vars count and prop (proportion).
 stat_count is used by default by geom_bar()
 
-```{r Chart_28.jpeg}
+```{r Chart_28a.jpeg}
 p <- ggplot(data = gapminder,
             mapping = aes(x = continent))
 p + geom_bar(mapping = aes(y = ..prop..))
