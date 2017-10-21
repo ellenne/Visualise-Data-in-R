@@ -118,7 +118,7 @@ p <- ggplot(data = gapminder,
             mapping = aes(x = gdpPercap, y = lifeExp))
 p + geom_point()
 ```
-![](figures\Chart_01.png)
+![](figures\Chart_01.jpeg)
 ## Let's look at the data
 
 ```{r}
