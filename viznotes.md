@@ -521,4 +521,4 @@ We can ask geom\_density to return some statistics such as:
 - ..scaled.. (proportional density scaled to a max of 1) 
 - ..count..  (density times the number of points)
 
-[![Figure 44](figures/Chart_44.jpeg)]
+![Figure 44](figures/Chart_44.jpeg)
